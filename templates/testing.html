@@ -42,13 +42,10 @@
                 .content-box {
                     position: relative;
                     justify-content: center;
-                    width: 960px;
-                    height: 500px;
-                    top: 60px;
                 }
 
                 .form-box-main {
-                    position: relative;
+                    position: fixed;
                     left: 50%; 
                     width: 960px;
                     height: 600px;
@@ -133,6 +130,7 @@
 
                 .send-button {
                     position: absolute;
+                    display: flex;
                     width: 260px;
                     height: 70px;
                     top: 500px;
@@ -143,6 +141,7 @@
                     font-size: 40px;
                     color: #FFFED5;
                     text-align: center;
+                    justify-content: center;
                     transition: 0.2s
                 }
 
@@ -153,6 +152,25 @@
 
                 input:focus {
                     outline: none;
+                }
+
+                .square {
+                    height: 30px;
+                    width: 30px;
+                    left: 20px;
+                    background-color: #FFFED5;
+                    animation: rotate 2s infinite;
+                    border-radius: 10px;
+                    align-self: center;
+            }
+            
+                @keyframes rotate {
+                    0% {
+                        transform: rotate(0deg); /* Obróć element o 0 stopni na początku animacji */
+                    }
+                    100% {
+                        transform: rotate(360deg); /* Obróć element o 360 stopni na końcu animacji */
+                    }
                 }
 
                 input {
@@ -230,7 +248,10 @@
 
 
         </div>
-            <button class="send-button" id="send" onclick="sendDataToEndpoint()">Send</button>
+            <button class="send-button" id="send" onclick="sendDataToEndpoint()">
+                Send
+            </button>
+
     </div>
 
     <div class="form-box-shadow"></div>
@@ -270,6 +291,9 @@
     </script>
     
     <script>
+    
+    var contentBox = $(".content-box");
+    
     function animateInputs(side) {
         if (side == "age") {
             var topUp = "0px";
@@ -314,7 +338,6 @@
     }
 
     function updateContentBox(mode) {
-        var contentBox = $(".content-box");
 
         var contentBoxHtml = `<div class="input-box">
             <label for="name" id="name" class="left-input-label">Name</label>
@@ -357,7 +380,6 @@
 
     function sendDataToEndpoint() {
 
-
         var sendButton = $(".send-button");
 
         console.log(sendButton[0].id);
@@ -386,16 +408,40 @@
             }
 
             var jsonDetails = JSON.stringify(details);
-            updateContentBox("empty");
-            sendButton[0].id = "back";
+            // Zamien tekst 'Send' w buttonie na element ladowania
+            sendButton.empty();
+            sendButton.append("<div class=\"square\"></div>")
+
+            // Wyslij zapytanie do serwera
+            fetch("http://localhost:5000/api/complete/", {headers: {"Content-Type": "application/json"}, method: "POST", body: jsonDetails})
+                .then(response => {
+
+                    if (response.ok) {
+                        return response.json()
+                    }
+                })
+                    .then(data => {
+
+                        updateContentBox("empty");
+                        contentBox.text(data["data"]);
+                        sendButton[0].id = "back";
+                        sendButton.remove("<div class=\"square\"></div>")
+                        sendButton.text("Back")
+
+                    })
+
         } 
         else if (sendButton[0].id == "back") {
+
+            updateContentBox("empty");
             updateContentBox("fill");
+
             animateInputs("left");
             animateInputs("right");
             animateInputs("age");
             animateInputs("about");
             sendButton[0].id = "send";
+            sendButton.text("Send");
         }
 
         
