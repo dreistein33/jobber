@@ -217,7 +217,7 @@
         <div class="content-box">
 
             <div class="input-box">
-                <label for="name" id="name" class="left-input-label">Name</label>
+                <label for="name" class="left-input-label">Name</label>
                 <input class="left-input" id="name" type="text" name="name" placeholder=" " required>
 
                 <label for="surname" class="left-input-label" style="left: 320px; text-align: right;">Surname</label>
@@ -340,7 +340,7 @@
     function updateContentBox(mode) {
 
         var contentBoxHtml = `<div class="input-box">
-            <label for="name" id="name" class="left-input-label">Name</label>
+            <label for="name" class="left-input-label">Name</label>
             <input class="left-input" id="name" type="text" name="name" placeholder=" " required>
 
             <label for="surname" class="left-input-label" style="left: 320px; text-align: right;">Surname</label>
@@ -370,10 +370,10 @@
         <textarea class="about-input" id="about" type="text" name="about" placeholder=" "></textarea>`;
 
         if (mode == "empty") {
-            contentBox.hide();
+            contentBox.empty();
             $(".send-button").text("Back");
         } else if (mode == "fill") {
-            contentBox.show();
+            contentBox.append(contentBoxHtml);
             $(".send-button").text("Send");
         }
     }
@@ -407,10 +407,13 @@
                 }
             }
 
+            console.log(details);
+
             var jsonDetails = JSON.stringify(details);
             // Zamien tekst 'Send' w buttonie na element ladowania
-            sendButton.empty();
-            sendButton.append("<div class=\"square\"></div>")
+            sendButton.text("");
+            loadingSquare = $("<div class=\"square\"></div>")
+            sendButton.append(loadingSquare);
 
             // Wyslij zapytanie do serwera
             fetch("http://localhost:5000/api/complete/", {headers: {"Content-Type": "application/json"}, method: "POST", body: jsonDetails})
@@ -425,15 +428,15 @@
                         updateContentBox("empty");
                         contentBox.text(data["data"]);
                         sendButton[0].id = "back";
-                        sendButton.remove("<div class=\"square\"></div>")
-                        sendButton.text("Back")
+                        sendButton.remove(loadingSquare);
+                        sendButton.text("Back");
 
                     })
 
         } 
         else if (sendButton[0].id == "back") {
 
-            updateContentBox("empty");
+            contentBox.text("");
             updateContentBox("fill");
 
             animateInputs("left");

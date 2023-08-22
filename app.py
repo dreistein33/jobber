@@ -8,7 +8,7 @@ CORS(app)
 
 @app.route("/")
 def home():
-    return render_template("home.html")
+    return render_template("testing.html")
 
 
 @app.route("/api/complete/", methods=["POST"])
@@ -29,13 +29,19 @@ def complete_query():
         all_keys = find_all_keys_recursive(request_dict)
 
         is_url_correct = request_dict.get("job_url", "").startswith("https://www.pracuj.pl")
+        
 
         return True if all_keys == acceptable_keys and is_url_correct else False
 
 
     decoded_details = request.json
 
-    if check_request(decoded_details):
+    print(decoded_details)
+
+    valid_details = check_request(decoded_details)
+    print(valid_details)
+
+    if valid_details:
         url = decoded_details["job_url"]
         person_details = decoded_details["details"]
         print(decoded_details, type(decoded_details))
@@ -52,7 +58,7 @@ def complete_query():
 
         return jsonify({"data": letter})
     else:
-        return jsonify({"data": "BAD REQUEST"})
+        return jsonify({"data": f"Error:"})
 
 if __name__ == "__main__":
     app.run(debug=True)
