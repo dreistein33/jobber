@@ -2,7 +2,7 @@ from flask import Flask, render_template, jsonify, request
 from flask_cors import CORS
 from test import get_moti_letter
 
-app = Flask(__name__, template_folder="./templates/")
+app = Flask(__name__, template_folder="./templates/", static_folder="./static/")
 CORS(app)
 
 

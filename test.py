@@ -52,13 +52,10 @@ def get_moti_letter(
 
     complete_prompt = about_you + cover_letter_prompt
 
-    # print("details ", repr(details))
-
-    # moti = f"Napisz list motywacyjny po polsku dla {person_details} ktory stara sie o prace w tej firmie:\n{details}"
-
-    # print(moti)
     print(f"Tokens in prompt: {count_tokens(complete_prompt)}")
 
+    # Is there a handier way to deal with the error here, so my backend will
+    # automatically detect if its an exception?
     try:
         response = g4f.ChatCompletion.create(model='gpt-3.5-turbo', provider=PROVIDER, messages=[
                                         {"role": "user", "content": complete_prompt}], stream=False)
