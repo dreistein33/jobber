@@ -63,13 +63,3 @@ def get_moti_letter(
         response = f"{e}"
 
     return response
-
-
-# pdf_path = "/home/dzony/Downloads/Jakub-Juchnowski.pdf"
-# with open(pdf_path) as f:
-#     pdf = PdfReader(pdf_path)
-
-#     page = pdf.pages[0]
-
-#     print(page.extract_text()) 
-
