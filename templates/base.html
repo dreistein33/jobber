@@ -1,17 +1,17 @@
 <!DOCTYPE html>
 <html>
-
     <head>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
         <link rel="stylesheet" href="{{url_for('static', filename='styles/styles.css')}}">            
+        <title>Motivational Letter Generator</title>
     </head>
 
 <body>
 
     <div class="form-box-main">
         <div class="content-box">
-
+            {% block content %} {% endblock %}
         </div>
     </div>
 
@@ -20,7 +20,11 @@
 <script type="text/javascript" src="{{url_for('static', filename='scripts/utils.js')}}"></script>
 <script>
     document.addEventListener("DOMContentLoaded", function() {
-        updateContentBox("fill");
+        var fieldsToAnimate = ["left", "right", "age", "about"];
+        for (var i = 0; i < fieldsToAnimate.length; i++) {
+            animateInputsLabels(fieldsToAnimate[i]);
+        }
+        $("textarea").val("");
         $("input").val("");
         $(".send-button").val("Send");
     })

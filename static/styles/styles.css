@@ -16,6 +16,8 @@
         --input-border: 1px solid rgb(236, 241, 247);
         --input-field-color: rgb(236, 241, 247);
         --input-focus-color: rgba(236, 241, 247, 0.521);
+        --input-font-size: 1.2rem;
+        --label-font-size: 1rem;
         --label-text-color: rgb(133, 154, 181);
         --grey-text: grey;
 
@@ -27,20 +29,28 @@
 
     input[type="text"] {
         border: var(--input-border);
-        background: var(--input-field-color);
         transition: 0.2s;
+        font-size: var(--input-font-size);
+        font-weight: 100;
     }
     
     input:focus {
         outline: var(--bg-color);
+        background-color: var(--input-focus-color);
     }
 
     input[type="text"]:hover {
         background: var(--input-focus-color);
     }
 
+    textarea {
+        font-size: var(--input-font-size);
+        font-weight: 100;
+    }
+
     p {
-        text-align: right;
+        text-align: left;
+        font-weight: 200;
     }
 
     .content-box {
@@ -59,7 +69,7 @@
         border-radius: 46px;
         z-index: 1;
         vertical-align: top;
-        box-shadow: 10px 10px 1px 1px #FF3434;
+        /* box-shadow: 10px 10px 1px 1px #FF3434; */
     }
 
     .input-box {
@@ -78,6 +88,7 @@
         height: 100%;
         background: var(--input-field-color);
         border-radius: var(--main-border-radius-left);
+        border-right: 0px;
         z-index: 1;
     }
 
@@ -85,9 +96,10 @@
         position: relative;
         width: 50%;
         height: 100%;
-        background: var(--input-field-color); 
+        background: rgb(232, 235, 240); 
         border-radius: var(--main-border-radius-right);
         z-index: 0;
+        border-left: none;
     }
 
     .age-input {
@@ -98,6 +110,7 @@
         width: 300px;
         height: 100px;
         border-radius: 18px;
+        background: var(--input-field-color);
         /* float: right; */
     }
 
@@ -105,6 +118,11 @@
         position: absolute;
         width: 300px;
         height: 240px;
+        max-width: 300px;
+        max-height: 240px;
+        min-width: 300px;
+        min-height: 240px;
+        resize: none;
         right: 50px;
         top: 170px;
         border: var(--input-border);
@@ -139,16 +157,16 @@
         border-radius: 45px;
         font-size: 2rem;
         color: #FFFED5;
-        box-shadow: 10px 10px 1px 1px var(--bg-color);
         text-align: center;
         justify-content: center;
         transition: 0.2s
     }
 
     .send-button:hover {
-        width: 261px;
-        height: 75px;
+        /* width: 261px;
+        height: 75px; */
         cursor: pointer;
+        background: #fd1d1d;
     }
 
     .square {
@@ -164,9 +182,9 @@
     .input-label {
         position: absolute;
         left: 30px;
-        top: 35px;
+        top: 40px;
         z-index: 2;
-        font-size: 1rem;
+        font-size: var(--label-font-size);
         font-weight:500;
         color: var(--label-text-color);
         pointer-events: none;

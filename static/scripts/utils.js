@@ -65,22 +65,23 @@ function validateFormData(data_dict) {
 
 // This functions animate text in labels to go above the input form 
 function animateInputsLabels(side) {
+
+
     if (side == "age") {
-        var topUp = "0px";
+        var topUp = "7px";
         var topDown = "60px";
     } else if (side == "about") {
-        var topUp = "140px";
+        var topUp = "145px";
         var topDown = "200px";
-    } else {
-        var topUp = "-30px";
-        var topDown = "35px";
+    } else  {
+        var topUp = "-25px";
+        var topDown = "40px";
     }
 
     $("." + side + "-input").focus(function() {
-    var id = this.id;
     var element = "label[for=" + this.id + "]";
 
-    $(element).css({"top": topUp});
+    $(element).css({"top": topUp, "font-size": "0.8rem"});
 })
 
 // Make the text go back to its root position
@@ -88,7 +89,7 @@ $("." + side + "-input").on("focusout", function() {
     if (this.value.length == 0) {
         var labelElement = "label[for=" + this.id + "]";
 
-        $(labelElement).css({"top": topDown});
+        $(labelElement).css({"top": topDown, "font-size": "1rem"});
     }
 });
 }
@@ -149,10 +150,10 @@ function updateContentBox(mode) {
             <input class="right-input" id="job-link" type="text" name="job-link" placeholder=" "required>
         </div>
 
-        <label for="age" class="input-label" style="left: 630px; top: 62px;">Age</label>
+        <label for="age" class="input-label" style="left: 630px; top: 72px;">Age</label>
         <input class="age-input" id="age" type="text" name="age" placeholder="" required>
 
-        <label for="about" class="input-label" style="left: 630px; top: 200px;">About</label>
+        <label for="about" class="input-label" style="left: 630px; top: 210px;">About</label>
         <textarea class="about-input" id="about" type="text" name="about" placeholder=" " required></textarea>
 
         <input class="send-button" type="submit" value="Send">

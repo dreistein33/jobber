@@ -9,7 +9,7 @@ CORS(app)
 
 @app.route("/")
 def home():
-    return render_template("testing.html")
+    return render_template("form.html")
 
 
 @app.route("/api/complete/", methods=["POST"])
