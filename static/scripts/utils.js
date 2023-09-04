@@ -50,7 +50,7 @@ function validateFormData(data_dict) {
 
     for (const key in flat_dict) {
         // Declare current item in the list as variable
-        var currentInputElement = flat_dict.key;
+        var currentInputElement = flat_dict[key];
         console.log("lol", currentInputElement);
         if (currentInputElement == null || pattern.test(currentInputElement)) {
             return false; 
@@ -126,33 +126,33 @@ function updateContentBox(mode) {
     var contentBoxHtml = `
     <form id="user-form" onsubmit="sendDataToEndpoint()">
             <div class="input-box">
-            <label for="name" class="left-input-label">Name</label>
+            <label for="name" class="input-label">Name</label>
             <input class="left-input" id="name" type="text" name="name" placeholder=" " required>
 
-            <label for="surname" class="left-input-label" style="left: 320px; text-align: right;">Surname</label>
+            <label for="surname" class="input-label" style="left: 320px; text-align: right;">Surname</label>
             <input class="right-input" id="surname" type="text" value=" " name="surname" placeholder=" " required>
         </div>
 
         <div class="input-box">
-            <label for="interests" class="left-input-label">Interests</label>
+            <label for="interests" class="input-label">Interests</label>
             <input class="left-input" id="interests" type="text" name="interests" placeholder=" " required>
 
-            <label for="language" class="left-input-label" style="left: 320px;">Language</label>
+            <label for="language" class="input-label" style="left: 320px;">Language</label>
             <input class="right-input" id="language" type="text" name="language" placeholder=" " required>
         </div>
 
         <div class="input-box">
-            <label for="job-title" class="left-input-label">Job Title</label>
+            <label for="job-title" class="input-label">Job Title</label>
             <input class="left-input" id="job-title" type="text" name="job-title" placeholder=" "required>
 
-            <label for="job-link" class="left-input-label" style="left: 320px;">Job Link</label>
+            <label for="job-link" class="input-label" style="left: 320px;">Job Link</label>
             <input class="right-input" id="job-link" type="text" name="job-link" placeholder=" "required>
         </div>
 
-        <label for="age" class="left-input-label" style="left: 630px; top: 62px;">Age</label>
+        <label for="age" class="input-label" style="left: 630px; top: 62px;">Age</label>
         <input class="age-input" id="age" type="text" name="age" placeholder="" required>
 
-        <label for="about" class="left-input-label" style="left: 630px; top: 200px;">About</label>
+        <label for="about" class="input-label" style="left: 630px; top: 200px;">About</label>
         <textarea class="about-input" id="about" type="text" name="about" placeholder=" " required></textarea>
 
         <input class="send-button" type="submit" value="Send">
