@@ -4,9 +4,11 @@ var clipboardIconTemplate = `<svg xmlns="http://www.w3.org/2000/svg" width="32" 
 <path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z"/>
 </svg>`
 
-var backButton = $("<button class='send-button' id='send' onclick='backToMainForm()></button>'");
+var backButton = $("<button class=\"send-button\" id=\"send\" onclick=\"backToMainForm()\">Back</button>");
+backButton.css({"top": "420px"});
 var contentBox = $(".content-box");
 var clipboardIcon = $(clipboardIconTemplate);
+var formBox = $(".form-box-main");
 
 
 function retrieveFormData() {
@@ -39,10 +41,18 @@ function retrieveFormData() {
 
 function validateFormData(data_dict) {
 
-    for (const key in data_dict) {
+    var pattern = /^\s*$/;
+
+    var flat_dict = {
+        ...data_dict.details,
+        "job_url": data_dict.job_url
+    };
+
+    for (const key in flat_dict) {
         // Declare current item in the list as variable
-        var currentInputElement = data_dict[key];
-        if (currentInputElement == null) {
+        var currentInputElement = flat_dict.key;
+        console.log("lol", currentInputElement);
+        if (currentInputElement == null || pattern.test(currentInputElement)) {
             return false; 
         } 
         
@@ -50,24 +60,6 @@ function validateFormData(data_dict) {
     }
 
 
-}
-// Center main box 
-function centerElements(boxWidth, boxHeight) {
-    var width = screen.availWidth;
-    var height = screen.availHeight;
-
-    var top = ((height - boxHeight) / 2)
-    var left = (((width - boxWidth) / 2) / 1080) * 100;
-
-    // Can make this connected to shadow and center both of them
-
-    var containerDiv = $(".form-box-main");
-
-    containerDiv.css(
-        {
-            "top": top / 4 + "px",
-        }
-    );
 }
 
 
@@ -105,6 +97,7 @@ $("." + side + "-input").on("focusout", function() {
 // Update Send Button so it has unique id and tex for each state e.g = 'send', 'loading', 'back'
 function updateBackButton(state) {
     var loadingSquare = $("<div class=\"square\"></div>");
+    var backButton = $(".send-button");
 
     // state="send" means convert button id="send" text="Send"
     if (state == "send") {
@@ -112,7 +105,6 @@ function updateBackButton(state) {
         sendButton.text("Send");
     }
     else if (state == "loading") {
-        contentBox.append(backButton);
         backButton.text("");
         backButton.append(loadingSquare);
     }
@@ -132,7 +124,7 @@ function updateContentBox(mode) {
 
     // Declare the HTML for form 
     var contentBoxHtml = `
-    <form onsubmit="sendDataToEndpoint()">
+    <form id="user-form" onsubmit="sendDataToEndpoint()">
             <div class="input-box">
             <label for="name" class="left-input-label">Name</label>
             <input class="left-input" id="name" type="text" name="name" placeholder=" " required>
@@ -168,8 +160,9 @@ function updateContentBox(mode) {
 
     if (mode == "empty") {
         contentBox.empty();
-        updateBackButton("back");
-    } 
+        contentBox.append(backButton);
+        // (".send-button").prop("onsubmit", backToMainForm);
+    }   
     else if (mode == "fill") {
         contentBox.append(contentBoxHtml);
         animateInputsLabels("left");
@@ -179,43 +172,58 @@ function updateContentBox(mode) {
     }
 }
 
+function switchToResultScreen(textContent) {
 
-function sendDataToEndpoint() {
-    
+    var textBox = $("<div class='text-box'></div>");
+    textBox.append("<p>" + textContent + "</p>")
 
-        var details = retrieveFormData();
-        console.log(details);
-
-        var valid = validateFormData(details);
-
-        var jsonDetails = JSON.stringify(details);
-
-        contentBox.remove($("input .send-button"));
-        // Zamien tekst 'Send' w buttonie na element ladowania
-        updateBackButton("loading");
-
-        // Wyslij zapytanie do serwera
-        /* fetch("http://localhost:5000/api/complete/", {headers: {"Content-Type": "application/json"}, method: "POST", body: jsonDetails})
-            .then(response => {
-
-                if (response.ok) {
-                    return response.json()
-                }
-            })
-                .then(data => {
-
-                    updateContentBox("empty");
-                    contentBox.text(data["data"]);
-
-                }) */
-            updateContentBox("empty");
-            contentBox.text("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer efficitur nibh nec justo efficitur interdum. Duis consequat diam sit amet nulla pellentesque ultrices. Pellentesque mattis dapibus eleifend. Aenean dignissim lobortis libero sit amet pretium. Morbi id libero massa. Pellentesque efficitur lacus nec tempus molestie. Quisque at pellentesque dolor. Curabitur id diam ac justo commodo pellentesque quis ut quam. Fusce est velit, viverra quis odio sit amet, condimentum fringilla magna. Vivamus non ex ut dui tristique hendrerit eget ac lectus. Fusce tincidunt laoreet nibh, eu mattis dui rhoncus sit amet. Quisque condimentum cursus felis, at tristique orci convallis et.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer efficitur nibh nec justo efficitur interdum. Duis consequat diam sit amet nulla pellentesque ultrices. Pellentesque mattis dapibus eleifend. Aenean dignissim lobortis libero sit amet pretium. Morbi id libero massa. Pellentesque efficitur lacus nec tempus molestie. Quisque at pellentesque dolor. Curabitur id diam ac justo commodo pellentesque quis ut quam. Fusce est velit, viverra quis odio sit amet, condimentum fringilla magna. Vivamus non ex ut dui tristique hendrerit eget ac lectus. Fusce tincidunt laoreet nibh, eu mattis dui rhoncus sit amet. Quisque condimentum cursus felis, at tristique orci convallis et.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer efficitur nibh nec justo efficitur interdum. Duis consequat diam sit amet nulla pellentesque ultrices. Pellentesque mattis dapibus eleifend. Aenean dignissim lobortis libero sit amet pretium. Morbi id libero massa. Pellentesque efficitur lacus nec tempus molestie. Quisque at pellentesque dolor. Curabitur id diam ac justo commodo pellentesque quis ut quam. Fusce est velit, viverra quis odio sit amet, condimentum fringilla magna. Vivamus non ex ut dui tristique hendrerit eget ac lectus. Fusce tincidunt laoreet nibh, eu mattis dui rhoncus sit amet. Quisque condimentum cursus felis, at tristique orci convallis et.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer efficitur nibh nec justo efficitur interdum. Duis consequat diam sit amet nulla pellentesque ultrices. Pellentesque mattis dapibus eleifend. Aenean dignissim lobortis libero sit amet pretium. Morbi id libero massa. Pellentesque efficitur lacus nec tempus molestie. Quisque at pellentesque dolor. Curabitur id diam ac justo commodo pellentesque quis ut quam. Fusce est velit, viverra quis odio sit amet, condimentum fringilla magna. Vivamus non ex ut dui tristique hendrerit eget ac lectus. Fusce tincidunt laoreet nibh, eu mattis dui rhoncus sit amet. Quisque condimentum cursus felis, at tristique orci convallis et.");
-            contentBox.append(clipboardIcon);
-
+    contentBox.empty();
+    $(".form-box-main").append(backButton);
+    contentBox.append(textBox);
+    contentBox.append(clipboardIcon);
 }
+
+
 function backToMainForm() { 
 
-        contentBox.empty();
-        updateContentBox("fill");
+    contentBox.empty();
+    console.log($("#send"));
+    $("#send").remove();
+    updateContentBox("fill");
+}
+
+
+function sendDataToEndpoint() {
+
+    var details = retrieveFormData();
+    console.log(details);
+
+    var valid = validateFormData(details);
+
+    var jsonDetails = JSON.stringify(details);
+
+    // Zamien tekst 'Send' w buttonie na element ladowania
+
+    // Wyslij zapytanie do serwera
+    /* fetch("http://localhost:5000/api/complete/", {headers: {"Content-Type": "application/json"}, method: "POST", body: jsonDetails})
+        .then(response => {
+
+            if (response.ok) {
+                return response.json()
+            }
+        })
+            .then(data => {
+
+                updateContentBox("empty");
+                contentBox.text(data["data"]);
+
+            }) */
+
+    if (valid) {
+        switchToResultScreen("Siema");
+    }
+    else {
+        console.log("NO NIE HULA");
+    }
 }
     

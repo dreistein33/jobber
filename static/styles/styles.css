@@ -1,0 +1,193 @@
+
+@media screen and (min-width: 1024px) {
+
+    * {
+        font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    html {
+        overflow: scroll;
+    }
+
+    :root {
+        --main-border-radius: 45px;
+        --grey-text: grey;
+    }
+    
+    body {
+        background: #FF7283;
+    }
+
+    input {
+        border-color: purple;
+        border-bottom-width: 0px;
+        border-top-width: 0px;
+        border-left-width: 0px;
+        border-right-width: 0px;
+    }
+    
+    input:focus {
+        outline: none;
+    }
+
+    p {
+        text-align: right;
+    }
+
+    .content-box {
+        position: relative;
+        justify-content: center;
+    }
+
+    .form-box-main {
+        position: fixed;
+        left: 50%; 
+        width: 960px;
+        height: 600px;
+        transform: translateX(-50%);
+        transition: 0.5s;
+        background: #FFFED5;;
+        border-radius: var(--main-border-radius);
+        z-index: 1;
+        vertical-align: top;
+        box-shadow: 20px 20px 1px 5px #FF3434;
+    }
+
+    .input-box {
+        position: relative;
+        width: 500px;
+        height: 100px;
+        top: 30px;
+        margin-top: 40px;
+        margin-left: 50px;
+        display: flex;  
+    }
+
+    .left-input {
+        position: relative;
+        width: 50%;
+        height: 100%;
+        background: linear-gradient(100deg, #704FCB, #8979EB);
+        border-top-left-radius: var(--main-border-radius);
+        border-bottom-left-radius: var(--main-border-radius);
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+        z-index: 1;
+    }
+
+    .right-input {
+        position: relative;
+        width: 50%;
+        height: 100%;
+        /*transform: translateX(-30%);*/
+        background: linear-gradient(100deg, #9183f1, #704FCB); 
+        border-top-right-radius: var(--main-border-radius);
+        border-bottom-right-radius: var(--main-border-radius);
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+        z-index: 0;
+    }
+
+    .age-input {
+        position: absolute;
+        right: 50px;
+        top: 30px;
+        display: flex;
+        width: 300px;
+        height: 100px;
+        /* float: right; */
+        background: linear-gradient(100deg, #704FCB, #8979EB);
+        border-radius: var(--main-border-radius);
+    }
+
+    .about-input {
+        position: absolute;
+        width: 300px;
+        height: 240px;
+        right: 50px;
+        top: 170px;
+        background: linear-gradient(100deg, #704FCB, #8979EB);
+        border-radius: var(--main-border-radius);
+        border-top-left-radius: 0;
+    }
+
+    .text-box {
+        width: 80%;
+        height: 80%;
+        padding: 5% 10%;
+    }
+
+    .send-button {
+        position: absolute;
+        display: flex;
+        width: 260px;
+        height: 70px;
+        transform: translateY(70px);
+        left: 350px;
+        background: #FF3434;
+        border-radius: var(--main-border-radius);
+        font-size: 40px;
+        color: #FFFED5;
+        text-align: center;
+        justify-content: center;
+        transition: 0.2s
+    }
+
+    .send-button:hover {
+        width: 261px;
+        height: 75px;
+        cursor: pointer;
+    }
+
+    .square {
+        height: 30px;
+        width: 30px;
+        left: 20px;
+        background-color: #FFFED5;
+        animation: rotate 2s infinite;
+        border-radius: 10px;
+        align-self: center;
+}
+
+    .left-input-label {
+        position: absolute;
+        left: 30px;
+        top: 35px;
+        z-index: 2;
+        font-size: 22px;
+        font-weight:500;
+        color: #FFFED5;
+        pointer-events: none;
+        transition: 0.3s;
+    }
+
+    .left-input-label:hover {
+        cursor: text;
+        font-size: 23px;
+    }
+
+    .article-box {
+        background-color: #fffed157;
+        border: 1px solid grey;
+        font-family: var(--main-font);
+        font-size: 1.2rem;
+        overflow: scroll;
+        width: 860px;
+        height: 450px;
+        max-height: 75%;
+        margin-left: 50px;
+        margin-top: 10px;
+        padding: 50px;
+        line-height: 1.5;
+    }
+}
+
+/* Animation Section */
+    @keyframes rotate {
+        0% {
+            transform: rotate(0deg); /* Obróć element o 0 stopni na początku animacji */
+        }
+        100% {
+            transform: rotate(360deg); /* Obróć element o 360 stopni na końcu animacji */
+        }
+    }

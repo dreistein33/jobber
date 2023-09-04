@@ -1,6 +1,7 @@
-from flask import Flask, render_template, jsonify, request
+from api import get_moti_letter
+from flask import Flask, render_template, jsonify, request, Response
 from flask_cors import CORS
-from test import get_moti_letter
+from validation import check_request
 
 app = Flask(__name__, template_folder="./templates/", static_folder="./static/")
 CORS(app)
@@ -13,27 +14,6 @@ def home():
 
 @app.route("/api/complete/", methods=["POST"])
 def complete_query():
-
-    def find_all_keys_recursive(dictionary):
-        all_keys = set()
-        for key, value in dictionary.items():
-            all_keys.add(key)
-            if isinstance(value, dict):
-                nested_keys = find_all_keys_recursive(value)
-                all_keys.update(nested_keys)
-        return all_keys
-
-    def check_request(request_dict):
-        acceptable_keys = {"language", "job_url", "details", "job_title", "person_name", "person_surname", "person_age", "person_interests", "person_about"}
-
-        all_keys = find_all_keys_recursive(request_dict)
-
-        is_url_correct = request_dict.get("job_url", "").startswith("https://www.pracuj.pl")
-        
-
-        return True if all_keys == acceptable_keys and is_url_correct else False
-
-
     decoded_details = request.json
 
     print(decoded_details)
@@ -57,8 +37,12 @@ def complete_query():
         letter = get_moti_letter(language, url, job_title, person_name, person_surname, person_age, person_interests, person_about)
 
         return jsonify({"data": letter})
-    else:
-        return jsonify({"data": f"Error:"})
+
+    return Response(
+        "Bad Response. Invalid Data.",
+        status=400
+    ) 
+
 
 if __name__ == "__main__":
     app.run(debug=True)
