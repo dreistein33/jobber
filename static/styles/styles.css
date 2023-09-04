@@ -5,10 +5,6 @@
         font-family: "Roboto", sans-serif;
     }
 
-    html {
-        overflow: scroll;
-    }
-
     :root {
         --bg-color: #FF7283;
         --main-border-radius-left: 18px 0px 0px 18px;
@@ -24,7 +20,10 @@
     }
     
     body {
+        overflow: auto;
         background: var(--bg-color);
+        justify-content: center;
+        /* padding-top: 1em; */
     }
 
     input[type="text"] {
@@ -59,13 +58,14 @@
     }
 
     .form-box-main {
-        position: fixed;
-        left: 50%; 
+        position: relative;
+        padding-top: 10px;
+        left: 50%;
         width: 960px;
         height: 600px;
         transform: translateX(-50%);
         transition: 0.5s;
-        background: #FFFED5;;
+        background: #FFFED5;
         border-radius: 46px;
         z-index: 1;
         vertical-align: top;
@@ -158,6 +158,7 @@
         font-size: 2rem;
         color: #FFFED5;
         text-align: center;
+        letter-spacing: .1em;
         justify-content: center;
         transition: 0.2s
     }
@@ -211,7 +212,28 @@
     }
 }
 
-/* Animation Section */
+    .typewriter {
+        position: relative;
+        width: auto;
+        left: 50%;
+        transform: translateX(-50%);
+        display: inline-block;
+        padding: 20px;
+    }
+
+    .typewriter h2 {
+        overflow: hidden; 
+        white-space: nowrap; 
+        margin: 0 auto; 
+        letter-spacing: .15em; 
+        color: #FFFED5;
+        font-weight: 500;
+        animation: 
+        typing 3.5s steps(40, end),
+        blink-caret .75s step-end infinite;
+    }
+    
+    /* Animation Section */
     @keyframes rotate {
         0% {
             transform: rotate(0deg); /* Obróć element o 0 stopni na początku animacji */
@@ -219,4 +241,15 @@
         100% {
             transform: rotate(360deg); /* Obróć element o 360 stopni na końcu animacji */
         }
+    }
+    @keyframes typing {
+        from { width: 0 }
+        to { width: 100% }
+        }
+        
+
+    @keyframes blink-caret {
+    from, to { border-color: transparent }
+    50% { border-color: var(--label-text-color); }
+    100% {border-color: transparent}
     }
