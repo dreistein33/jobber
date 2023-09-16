@@ -4,7 +4,8 @@ var clipboardIconTemplate = `<svg xmlns="http://www.w3.org/2000/svg" width="32" 
 <path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z"/>
 </svg>`
 
-var backButton = $("<button class=\"send-button\" id=\"send\" onclick=\"backToMainForm()\">Back</button>");
+var backButton = $("<button class=\"send-button\" id=\"send\" onclick=\"backToMainForm()\" style=padding-top:15px;>Back</button>");
+var loadingButton = $("<button class=\"send-button\" id=\"loading\"><div class=\"square\"></div></button>");
 backButton.css({"top": "420px"});
 var contentBox = $(".content-box");
 var clipboardIcon = $(clipboardIconTemplate);
@@ -125,7 +126,7 @@ function updateContentBox(mode) {
 
     // Declare the HTML for form 
     var contentBoxHtml = `
-    <form id="user-form" onsubmit="sendDataToEndpoint()">
+    <form id="user-form" onsubmit="sendDataToEndpoint(event)">
             <div class="input-box">
             <label for="name" class="input-label">Name</label>
             <input class="left-input" id="name" type="text" name="name" placeholder=" " required>
@@ -173,7 +174,22 @@ function updateContentBox(mode) {
     }
 }
 
+
+function disableInputs() {
+    $("form input").prop("disabled", true);
+    $("form textarea").prop("disabled", true);
+}
+
+
+function switchToLoadingScreen() {
+    $(".send-button").remove();
+    $(".form-box-main").append(loadingButton);
+    disableInputs();
+}
+
+
 function switchToResultScreen(textContent) {
+    $("#loading").remove();
 
     var textBox = $("<div class='text-box'></div>");
     textBox.append("<p>" + textContent + "</p>")
@@ -194,7 +210,8 @@ function backToMainForm() {
 }
 
 
-function sendDataToEndpoint() {
+function sendDataToEndpoint(event) {
+    event.preventDefault();
 
     var details = retrieveFormData();
     console.log(details);
@@ -204,27 +221,22 @@ function sendDataToEndpoint() {
     var jsonDetails = JSON.stringify(details);
 
     // Zamien tekst 'Send' w buttonie na element ladowania
-
-    // Wyslij zapytanie do serwera
-    /* fetch("http://localhost:5000/api/complete/", {headers: {"Content-Type": "application/json"}, method: "POST", body: jsonDetails})
-        .then(response => {
-
-            if (response.ok) {
-                return response.json()
-            }
-        })
-            .then(data => {
-
-                updateContentBox("empty");
-                contentBox.text(data["data"]);
-
-            }) */
-
     if (valid) {
-        switchToResultScreen("Siema");
-    }
-    else {
-        console.log("NO NIE HULA");
+        // Zamien button na ten z animacja ladowania
+        switchToLoadingScreen();
+
+        // Wyslij zapytanie do serwera
+        fetch("http://localhost:5000/api/complete/", {headers: {"Content-Type": "application/json"}, method: "POST", body: jsonDetails})
+            .then(response => {
+
+                if (response.ok) {
+                    return response.json()
+                }
+            })
+                .then(data => {
+                    switchToResultScreen(data["data"]);
+                }); 
+
     }
 }
     

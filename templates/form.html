@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <form id="user-form" onsubmit="sendDataToEndpoint()">
+    <form id="user-form" onsubmit="sendDataToEndpoint(event)">
             <div class="input-box">
             <label for="name" class="input-label">Name</label>
             <input class="left-input" id="name" type="text" name="name" placeholder=" " required>
