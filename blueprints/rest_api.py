@@ -1,8 +1,8 @@
 # REST-API for generating GPT responses
 
 from flask import Blueprint, jsonify, request
-from .api import get_moti_letter
-from .validation import check_request
+from ..api import get_moti_letter
+from ..validation import check_request
 
 rest_api = Blueprint("rest_api", __name__)
 
