@@ -33,7 +33,7 @@
         font-weight: 100;
     }
     
-    input:focus {
+    input[type="text"]:focus {
         outline: var(--bg-color);
         background-color: var(--input-focus-color);
     }
@@ -44,13 +44,41 @@
 
     textarea {
         font-size: var(--input-font-size);
+        background: var(--input-field-color);
+        border-radius: 18px;
+        border: var(--input-border);
         font-weight: 100;
+    }
+
+    textarea:focus {
+        outline: none;
     }
 
     p {
         text-align: left;
         font-weight: 200;
     }
+
+    nav {
+        height: 50px;
+        width: 100%;
+        margin-bottom: 20px;
+        border-bottom: solid 1px var(--input-field-color);
+        opacity: 50%;
+        box-shadow: 1px 1px 0px 0px var(--input-field-color);
+    }
+
+    nav > a {
+        position: relative;
+        top: 50%;
+        transform: translateY(-50%);
+        text-decoration: none;
+        color: #FFFED5;
+        font-size: 1.2rem; 
+        font-weight: 500;
+        float: right;
+        margin-inline: 0.5rem;
+    }   
 
     .content-box {
         position: relative;
@@ -125,9 +153,6 @@
         resize: none;
         right: 50px;
         top: 170px;
-        border: var(--input-border);
-        background: var(--input-field-color);
-        border-radius: 18px;
         transition: 0.2s;
     }
 
@@ -135,14 +160,14 @@
         background: var(--input-focus-color);
     }
 
-    .about-input:focus {
-        outline: none;
-    }
-
     .text-box {
+        position: inherit;
+        margin-top: 2rem;
+        left: 10%;
         width: 80%;
-        height: 80%;
-        padding: 5% 10%;
+        height: calc(600px * 0.65);
+        max-width: 100%;
+        max-height: calc(600px * 0.7);
     }
 
     .send-button {
@@ -150,7 +175,7 @@
         display: flex;
         border: none;
         width: 260px;
-        height: 70px;
+        height: 60px;
         transform: translateY(70px);
         left: 350px;
         background: #FF3434;
@@ -232,7 +257,7 @@
         typing 3.5s steps(40, end),
         blink-caret .75s step-end infinite;
     }
-    
+
     /* Animation Section */
     @keyframes rotate {
         0% {

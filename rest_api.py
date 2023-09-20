@@ -1,31 +1,25 @@
-from api import get_moti_letter
-from flask import Flask, render_template, jsonify, request, Response
-from flask_cors import CORS
-from validation import check_request
+# REST-API for generating GPT responses
 
-app = Flask(__name__, template_folder="./templates/", static_folder="./static/")
-CORS(app)
+from flask import Blueprint, jsonify, request
+from .api import get_moti_letter
+from .validation import check_request
 
-
-@app.route("/")
-def home():
-    return render_template("form.html")
+rest_api = Blueprint("rest_api", __name__)
 
 
-@app.route("/api/complete/", methods=["POST"])
+@rest_api.route("/api/complete/", methods=["POST"])
 def complete_query():
     decoded_details = request.json
 
     print(decoded_details)
 
+    # Make sure all of the keys needed are here.
     valid_details = check_request(decoded_details)
     print(valid_details)
 
     if valid_details:
         url = decoded_details["job_url"]
         person_details = decoded_details["details"]
-        print(decoded_details, type(decoded_details))
-
         language = person_details["language"]
         job_title = person_details["job_title"]
         person_name = person_details["person_name"]
@@ -42,7 +36,3 @@ def complete_query():
         "Bad Response. Invalid Data.",
         status=400
     ) 
-
-
-if __name__ == "__main__":
-    app.run(host="0.0.0.0", debug=True)

@@ -1,16 +1,22 @@
 <!DOCTYPE html>
 <html>
+
     <head>
+
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
         <link rel="stylesheet" href="{{url_for('static', filename='styles/styles.css')}}">            
         <title>Motivational Letter Generator</title>
+
     </head>
 
 <body>
-    <div class="typewriter" style="text-align:center;">
-        <h2>Motivational Letter Generator</h2>
-    </div>
+
+    <nav>
+        <a href="/register">Register</a>
+        <a href="/login">Login</a>
+    </nav>
+
     <div class="form-box-main">
         <div class="content-box">
             {% block content %} {% endblock %}
@@ -31,4 +37,5 @@
         $(".send-button").val("Send");
     })
 </script>
+
 </html>
