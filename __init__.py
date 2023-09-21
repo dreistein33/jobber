@@ -3,6 +3,7 @@ from flask_cors import CORS
 from flask_login import LoginManager
 from flask_sqlalchemy import SQLAlchemy
 
+
 db = SQLAlchemy()
 
 
@@ -20,16 +21,16 @@ def create_app():
     db.init_app(app)
 
     # Import blueprints for Flask app
-    from blueprints import (
+    from .blueprints import (
         auth_blueprint,
-        main_blueprint,
+        home_blueprint,
         rest_api_blueprint
     )
 
     # Register blueprints so it will allow usage of its namespace
-    app.register_blueprint(auth_blueprint)              # "auth"
-    app.register_blueprint(main_blueprint)              # "main"
-    app.register_blueprint(rest_api_blueprint)          # "rest_api"
+    app.register_blueprint(auth_blueprint)              # auth
+    app.register_blueprint(home_blueprint)              # home
+    app.register_blueprint(rest_api_blueprint)          # rest_api
 
     return app
 

@@ -27,8 +27,9 @@ def check_request(request_dict: dict) -> bool:
 
 
 def is_user_in_db(email: str, name: str) -> bool:
-    email_exists = User.query.filter_by(email=email)
-    name_exists = User.query.filter_by(name=name)
+    email_exists = User.query.filter_by(email=email).first()
+    print(email_exists)
+    name_exists = User.query.filter_by(name=name).first()
 
     if email_exists or name_exists:
         return True

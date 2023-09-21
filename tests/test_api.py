@@ -3,7 +3,9 @@ from api import count_tokens, get_company_details, get_moti_letter
 
 
 def test_count_tokens():
-    pass
+    tokens = count_tokens("siema")
+
+    assert tokens == 5
 
 
 def test_get_company_details():

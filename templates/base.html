@@ -13,16 +13,12 @@
 <body>
 
     <nav>
-        <a href="/register">Register</a>
-        <a href="/login">Login</a>
+        <a href="{{url_for('auth.register')}}">Register</a>
+        <a href="{{url_for('auth.login')}}">Login</a>
     </nav>
 
-    <div class="form-box-main">
-        <div class="content-box">
-            {% block content %} {% endblock %}
-        </div>
-    </div>
-
+    {% block content %} {% endblock %}
+    
 </body>
 
 <script type="text/javascript" src="{{url_for('static', filename='scripts/utils.js')}}"></script>

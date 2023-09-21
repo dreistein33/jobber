@@ -12,8 +12,8 @@ class Config:
     
     # General
     SECRET_KEY = environ.get("FLASK_SECRET_KEY")
-    STATIC_FOLDER = "static"
-    TEMPLATES_FOLDER = "templates"
+    STATIC_FOLDER = path.join(BASE_DIR, "static") 
+    TEMPLATES_FOLDER = path.join(BASE_DIR, "templates") 
 
     # Database
     SQLALCHEMY_DATABASE_URI = environ.get("DATABASE_URL")
