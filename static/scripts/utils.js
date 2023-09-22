@@ -211,6 +211,7 @@ function backToMainForm() {
 
     contentBox.empty();
     console.log($("#send"));
+    $("#loading").remove();
     $("#send").remove();
     updateContentBox("fill");
 }
@@ -235,20 +236,25 @@ function sendDataToEndpoint(event) {
         // Zamien button na ten z animacja ladowania
         switchToLoadingScreen();
 
+        var requestData = {headers: {"Content-Type": "application/json"}, method: "POST", body: jsonDetails}
+
         // Wyslij zapytanie do serwera
-        fetch("http://localhost:5000/api/complete/", {headers: {"Content-Type": "application/json"}, method: "POST", body: jsonDetails})
+        fetch("http://localhost:5000/api/complete/", requestData)
             .then(response => {
 
-                if (response.status == 200) {
+                if (response.ok) {
                     return response.json()
                 }
-                else {
-                    console.log("error" + response);
-                }
+                backToMainForm();
+                return Promise.reject(response);
             })
                 .then(data => {
                     switchToResultScreen(data["data"]);
-                }); 
+                }) 
+                .catch(error => {
+                    console.log(error);
+                    backToMainForm();
+                });
 
     }
 }

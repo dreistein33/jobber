@@ -1,4 +1,11 @@
-from flask import Blueprint, request, render_template, redirect, url_for, jsonify
+from flask import (
+    Blueprint,
+    redirect,
+    render_template,
+    request,
+    Response,
+    url_for
+)
 from werkzeug.security import generate_password_hash, check_password_hash
 from ..database.models import User
 from ..validation import is_user_in_db
@@ -16,7 +23,6 @@ def register():
         password = request.form.get("password")
         print(email, username, password)
 
-
         # Create new User object
         new_user = User(name=username, password=password_hash, email=email)
 
@@ -30,8 +36,12 @@ def register():
             # Return succes page defined in main blueprint
             return redirect(url_for("home.register_success"))
 
+        # Return 
         except AssertionError as error_message:
-            return 
+            return Response(
+                error_message,
+                status=400
+            )
 
     # Return register form as default as if there are any other 
     # request method than POST
