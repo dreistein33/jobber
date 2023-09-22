@@ -1,6 +1,6 @@
 # Define functions need to check either the request data, database and form data
 
-from .models import User
+from .database.models import User
 
 
 def find_all_keys_recursive(dictionary: dict) -> set:

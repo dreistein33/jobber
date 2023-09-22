@@ -6,7 +6,7 @@ import tiktoken
 
 TOKEN_LIMIT = 4096
 
-PROVIDER = g4f.Provider.DeepAi
+PROVIDER = g4f.Provider.Aivvm
 
 
 def count_tokens(text: str) -> int:

@@ -239,8 +239,11 @@ function sendDataToEndpoint(event) {
         fetch("http://localhost:5000/api/complete/", {headers: {"Content-Type": "application/json"}, method: "POST", body: jsonDetails})
             .then(response => {
 
-                if (response.ok) {
+                if (response.status == 200) {
                     return response.json()
+                }
+                else {
+                    console.log("error" + response);
                 }
             })
                 .then(data => {
