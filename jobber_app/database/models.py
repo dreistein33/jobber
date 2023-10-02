@@ -5,7 +5,7 @@ from sqlalchemy import func
 from sqlalchemy.orm import validates
 from werkzeug.security import check_password_hash, generate_password_hash
 
-from .. import db, create_app
+from .. import db
 
 @dataclass
 class ErrorMessage:
@@ -65,7 +65,7 @@ class User(UserMixin, db.Model):
         if not username:
             raise AssertionError(ErrorMessage.NO_USERNAME)
         
-        if User.query.filter_by(User.username == username).first():
+        if User.query.filter_by(username=username).first():
             raise AssertionError(ErrorMessage.USER_EXISTS)
 
         if len(username) not in range(3, 33):
@@ -78,7 +78,7 @@ class User(UserMixin, db.Model):
         if not email:
             raise AssertionError(ErrorMessage.NO_EMAIL)
 
-        if User.query.filter_by(User.email == email).first():
+        if User.query.filter_by(email=email).first():
             raise AssertionError(ErrorMessage.USER_EXISTS)
 
         email_pattern = r"(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)"

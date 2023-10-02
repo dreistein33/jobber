@@ -24,10 +24,10 @@ def register():
         print(email, username, password)
 
         # Create new User object
-        new_user = User(name=username, password=password_hash, email=email)
 
         try:
         # Add user to database
+            new_user = User(username=username, email=email)
             new_user.create_password_hash(password)
             db.session.add(new_user)
             db.session.commit()
@@ -39,7 +39,7 @@ def register():
         # Return 
         except AssertionError as error_message:
             return Response(
-                error_message,
+                str(error_message),
                 status=400
             )
 
