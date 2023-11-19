@@ -6,6 +6,7 @@ from flask_sqlalchemy import SQLAlchemy
 
 
 db = SQLAlchemy()
+login_manager = LoginManager()
 
 
 def create_app() -> None:
@@ -14,11 +15,14 @@ def create_app() -> None:
     from .config import DevelopmentConfig
     # Bind the config to app
     app.config.from_object(DevelopmentConfig()) 
+    print(app.config)
 
     # Allow making requests to the same endpoint
     CORS(app)
 
     db.init_app(app)
+    login_manager.init_app(app)
+    login_manager.login_view = "login"
 
     # Import blueprints for Flask app
     from .blueprints import (

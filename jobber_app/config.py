@@ -14,6 +14,7 @@ class Config:
     load_dotenv(path.join(BASE_DIR, ".env"))
     
     # General
+    FLASK_HOST = "0.0.0.0"
     SECRET_KEY = environ.get("FLASK_SECRET_KEY")
     STATIC_FOLDER = path.join(BASE_DIR, "static") 
     TEMPLATES_FOLDER = path.join(BASE_DIR, "templates") 

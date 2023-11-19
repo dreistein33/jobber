@@ -6,7 +6,7 @@ import tiktoken
 
 TOKEN_LIMIT = 4096
 
-PROVIDER = g4f.Provider.Aivvm
+PROVIDER = g4f.Provider.GptGo
 
 
 def count_tokens(text: str) -> int:
@@ -63,3 +63,10 @@ def get_moti_letter(
         response = f"{e}"
 
     return response
+
+
+if __name__ == "__main__":
+    response = g4f.ChatCompletion.create(model="gpt-3.5-turbo", provider=PROVIDER, messages=[
+        {"role": "user", "content": "Co tam u ciebie?"}], stream=False
+    )
+    print(response)

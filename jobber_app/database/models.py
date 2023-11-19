@@ -1,11 +1,17 @@
 from dataclasses import dataclass
 from flask_login import UserMixin
 import re
-from sqlalchemy import func
+from sqlalchemy import func, event
 from sqlalchemy.orm import validates
 from werkzeug.security import check_password_hash, generate_password_hash
 
-from .. import db
+from .. import db, login_manager
+
+
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(int(user_id))
+
 
 @dataclass
 class ErrorMessage:
@@ -24,7 +30,7 @@ class ErrorMessage:
     USER_EXISTS: str = "User already exists."
 
     NO_EMAIL: str = "No email provided."
-    BAD_EMAIL_PATTERN = "Provided email is not valid email address."
+    BAD_EMAIL_PATTERN: str = "Provided email is not valid email address."
 
 
 class User(UserMixin, db.Model):
@@ -60,8 +66,32 @@ class User(UserMixin, db.Model):
         return check_password_hash(self.password_hash, password)
 
     # Validate input data
+
     @validates("username")
-    def validate_username(self, key, username):
+    def validate_username(self, username):
+        return username
+
+    @validates("email")
+    def validate_email(self, email):      
+        return email
+
+
+@event.listens_for(User, 'before_insert')
+def validate_email_before_insert(mapper, connection, target):
+    # Tutaj możesz wywołać funkcję validate_email przed wstawieniem nowego rekordu do bazy danych
+    if not target.email:
+        raise AssertionError(ErrorMessage.NO_EMAIL)
+
+    if User.query.filter_by(email=target.email).first():
+        raise AssertionError(ErrorMessage.USER_EXISTS)
+
+    email_pattern = r"(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)"
+    if not re.match(email_pattern, target.email):
+        raise AssertionError(ErrorMessage.BAD_EMAIL_PATTERN)
+
+
+@event.listens_for(User, "before_insert")
+def validate_username_before_insert(mapper, connection, target):
         if not username:
             raise AssertionError(ErrorMessage.NO_USERNAME)
         
@@ -70,19 +100,3 @@ class User(UserMixin, db.Model):
 
         if len(username) not in range(3, 33):
             raise AssertionError(ErrorMessage.BAD_USERNAME_LENGTH)
-
-        return username
-
-    @validates("email")
-    def validate_email(self, key, email):
-        if not email:
-            raise AssertionError(ErrorMessage.NO_EMAIL)
-
-        if User.query.filter_by(email=email).first():
-            raise AssertionError(ErrorMessage.USER_EXISTS)
-
-        email_pattern = r"(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)"
-        if not re.match(email_pattern, email):
-            raise AssertionError(ErrorMessage.BAD_EMAIL_PATTERN)
-        
-        return email
